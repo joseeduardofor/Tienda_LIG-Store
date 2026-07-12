@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ILG Store · Tienda online</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar" id="top">
+      <div class="container nav-shell">
+        <a class="brand" href="#top">
+          <span class="brand-icon"><i class="fa-solid fa-bag-shopping"></i></span>
+          <span data-store-name>ILG Store</span>
+        </a>
+
+        <div class="nav-actions">
+          <label class="search-box" aria-label="Buscar productos">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="searchInput" type="text" placeholder="Buscar por nombre, categoría o precio">
+          </label>
+          <button class="icon-btn" type="button" aria-label="Ver favoritos">
+            <i class="fa-solid fa-heart"></i>
+            <span id="favoritesCount">0</span>
+          </button>
+          <button class="cart-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>Carrito</span>
+            <span class="cart-badge" id="cartCount">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-section">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Tienda online • ofertas exclusivas</p>
+            <h1>Encuentra todo lo que necesitas en un solo lugar.</h1>
+            <p class="hero-text">Descubre productos premium con envío rápido, pagos seguros y una experiencia de compra moderna, elegante y profesional.</p>
+            <div class="hero-actions">
+              <a href="#catalogo" class="btn btn-primary">Explorar productos</a>
+              <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">Ver carrito</button>
+            </div>
+            <div class="hero-stats">
+              <div class="stat-pill"><strong>+20k</strong><span>Clientes felices</span></div>
+              <div class="stat-pill"><strong>24/7</strong><span>Soporte</span></div>
+              <div class="stat-pill"><strong>98%</strong><span>Recomendado</span></div>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="hero-card">
+              <img src="foto califor.jpeg" alt="Producto destacado">
+              <div class="hero-badge">Oferta del día: $199.99</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="container highlights-grid">
+        <article class="highlight-card">
+          <i class="fa-solid fa-truck-fast"></i>
+          <h3>Envío rápido</h3>
+          <p>Entrega ágil para que recibas tus productos sin demoras.</p>
+        </article>
+        <article class="highlight-card">
+          <i class="fa-solid fa-shield-halved"></i>
+          <h3>Pago seguro</h3>
+          <p>Procesamiento protegido con confirmación inmediata.</p>
+        </article>
+        <article class="highlight-card">
+          <i class="fa-solid fa-star"></i>
+          <h3>Calidad garantizada</h3>
+          <p>Productos seleccionados con excelente relación precio/valor.</p>
+        </article>
+      </section>
+
+      <section class="catalog-section" id="catalogo">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Catálogo inteligente</p>
+              <h2>Explora los mejores productos</h2>
+            </div>
+            <div class="section-tools">
+              <label class="select-wrap">
+                <span>Ordenar por</span>
+                <select id="sortSelect">
+                  <option value="featured">Destacados</option>
+                  <option value="rating">Mejor valorados</option>
+                  <option value="sales">Más vendidos</option>
+                  <option value="price-asc">Precio: menor a mayor</option>
+                  <option value="price-desc">Precio: mayor a menor</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div class="filters-panel">
+            <div class="chip-group" id="categoryChips"></div>
+            <div class="filter-controls">
+              <label class="range-filter">
+                <span>Precio máximo</span>
+                <input id="priceInput" type="range" min="50" max="1000" step="10" value="1000">
+                <strong id="priceValue">Hasta $1000</strong>
+              </label>
+              <div class="filter-pills">
+                <button class="filter-pill active" type="button" data-mode="all">Todos</button>
+                <button class="filter-pill" type="button" data-mode="featured">Destacados</button>
+                <button class="filter-pill" type="button" data-mode="new">Nuevos</button>
+                <button class="filter-pill" type="button" data-mode="offers">Ofertas</button>
+                <button class="filter-pill" type="button" data-mode="popular">Populares</button>
+                <button class="filter-pill" type="button" data-mode="rated">Mejor valorados</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-stack" id="sectionStack"></div>
+
+          <div id="loadingState" class="status-block">
+            <div class="spinner"></div>
+            <p>Cargando productos...</p>
+          </div>
+          <div id="errorState" class="status-block status-error d-none">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <p>No pudimos cargar los productos. Se mostrará la oferta local disponible.</p>
+            <button class="btn btn-primary" id="retryBtn" type="button">Reintentar</button>
+          </div>
+          <div class="product-grid" id="productsGrid"></div>
+          <div id="noResults" class="status-block d-none">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <p>No encontramos productos para tu búsqueda.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer-section">
+      <div class="container footer-grid">
+        <article class="footer-card profile-card" data-bs-toggle="modal" data-bs-target="#devModal">
+          <img class="profile-photo" src="foto.jpg" alt="Foto de perfil">
+          <div>
+            <h3>José Jaquez</h3>
+            <p>Estudiante Universitario | Desarrollador Web</p>
+          </div>
+        </article>
+
+        <article class="footer-card">
+          <h3>Stack de herramientas</h3>
+          <div class="skill-grid">
+            <span title="HTML5"><i class="fa-brands fa-html5"></i></span>
+            <span title="CSS3"><i class="fa-brands fa-css3-alt"></i></span>
+            <span title="JavaScript"><i class="fa-brands fa-js"></i></span>
+            <span title="SQL"><i class="fa-solid fa-database"></i></span>
+            <span title="IA"><i class="fa-solid fa-robot"></i></span>
+            <span title="Android"><i class="fa-brands fa-android"></i></span>
+            <span title="ABM"><i class="fa-solid fa-table-cells-large"></i></span>
+            <span title="Excel"><i class="fa-solid fa-file-excel"></i></span>
+            <span title="C#"><i class="fa-solid fa-code"></i></span>
+          </div>
+        </article>
+
+        <article class="footer-card">
+          <h3>Redes</h3>
+          <div class="social-grid">
+            <a href="https://www.youtube.com/@JoseEduardoJaquezEncarnacion" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </article>
+      </div>
+    </footer>
+  </div>
+
+  <div class="modal fade" id="productModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content custom-modal">
+        <div class="modal-header border-0">
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="productModalBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="offcanvas offcanvas-end cart-offcanvas" tabindex="-1" id="cartOffcanvas">
+    <div class="offcanvas-header">
+      <h5><i class="fa-solid fa-cart-shopping"></i> Tu carrito</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div id="cartItemsList" class="cart-list"></div>
+      <div id="cartEmptyState" class="empty-cart d-none">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <p>Tu carrito está vacío</p>
+      </div>
+      <div class="cart-summary">
+        <div class="summary-row"><span>Subtotal</span><strong id="cartSubtotal">$0.00</strong></div>
+        <div class="summary-row"><span>Envío</span><strong id="cartShipping">$0.00</strong></div>
+        <div class="summary-row total"><span>Total</span><strong id="cartTotal">$0.00</strong></div>
+        <div class="summary-actions">
+          <button class="btn btn-secondary w-100" id="checkoutBtn" type="button">Confirmar compra</button>
+          <button class="btn btn-ghost w-100" id="clearCartBtn" type="button">Vaciar carrito</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="paymentModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content custom-modal">
+        <div class="modal-header border-0">
+          <h5 class="modal-title">Pasarela de pago</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="paymentForm" novalidate>
+            <div class="mb-3">
+              <label class="form-label">Nombre completo</label>
+              <input type="text" class="form-control" id="cardName" placeholder="José J. Pérez" required>
+              <div class="invalid-feedback">Ingresa tu nombre completo.</div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Número de tarjeta</label>
+              <input type="text" class="form-control" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" required>
+              <div class="invalid-feedback">Ingresa un número de tarjeta válido.</div>
+            </div>
+            <div class="row">
+              <div class="col-6 mb-3">
+                <label class="form-label">Vencimiento</label>
+                <input type="text" class="form-control" id="cardExpiry" placeholder="MM/AA" maxlength="5" required>
+                <div class="invalid-feedback">Formato MM/AA.</div>
+              </div>
+              <div class="col-6 mb-3">
+                <label class="form-label">CVV</label>
+                <input type="text" class="form-control" id="cardCvv" placeholder="123" maxlength="4" required>
+                <div class="invalid-feedback">Ingresa 3 o 4 dígitos.</div>
+              </div>
+            </div>
+            <div class="summary-row total"><span>Total a pagar</span><strong id="paymentTotal">$0.00</strong></div>
+            <button class="btn btn-primary w-100 mt-3" type="submit">Pagar ahora</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="successModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content custom-modal text-center">
+        <div class="modal-body py-5">
+          <i class="fa-solid fa-circle-check success-icon"></i>
+          <h4 class="mt-3">¡Pago exitoso!</h4>
+          <p>Tu compra se procesó correctamente.</p>
+          <button class="btn btn-primary" id="downloadTicketBtn" type="button">Descargar ticket</button>
+          <button class="btn btn-ghost mt-2" data-bs-dismiss="modal" type="button">Seguir comprando</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="devModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content custom-modal">
+        <div class="modal-body text-center py-4">
+          <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></button>
+          <img class="profile-photo profile-photo-lg" src="foto.jpg" alt="Foto de perfil">
+          <h5 class="mt-3 mb-0">Ingeniero José Jaquez.</h5>
+          <p class="text-muted mb-2">Estudiante Universitario | Desarrollador Web</p>
+          <p class="modal-bio">Apasionado por construir experiencias digitales limpias, útiles y atractivas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="cartToast" class="toast custom-toast" role="alert">
+      <div class="toast-body">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toastMsg">Producto agregado</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
